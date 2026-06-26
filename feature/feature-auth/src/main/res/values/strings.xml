@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Login screen -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Sign in to your account</string>
+    <string name="login_button">Login</string>
+    <string name="login_no_account">Don\'t have an account?</string>
+    <string name="login_to_register">Register</string>
+
+    <!-- Register screen -->
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Sign up to get started</string>
+    <string name="register_button">Register</string>
+    <string name="register_have_account">Already have an account?</string>
+    <string name="register_to_login">Login</string>
+    <string name="register_tmdb_subtitle">TMDB does not support registration via API.\nCreate your account on the TMDB website to get started.</string>
+    <string name="register_tmdb_button">Sign up on TMDB</string>
+
+    <!-- Common auth fields -->
+    <string name="field_full_name">Full Name</string>
+    <string name="field_full_name_hint">John Doe</string>
+    <string name="field_email">Username</string>
+    <string name="field_email_hint">Your TMDB username</string>
+    <string name="field_password">Password</string>
+    <string name="field_confirm_password">Confirm Password</string>
+
+    <!-- Validation errors -->
+    <string name="error_name_empty">Name cannot be empty</string>
+    <string name="error_email_empty">Username cannot be empty</string>
+    <string name="error_email_invalid">Invalid username</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_passwords_mismatch">Passwords do not match</string>
+    <string name="error_email_already_exists">Email already exists</string>
+    <string name="error_wrong_credentials">Wrong username or password</string>
+
+</resources>

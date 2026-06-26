@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_title">Welcome Home</string>
+    <string name="home_subtitle">You are logged in</string>
+    <string name="home_logout_button">Logout</string>
+</resources>
