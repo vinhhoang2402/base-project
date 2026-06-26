@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -18,6 +19,7 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
+        compose = true
         viewBinding = true
     }
 }
@@ -27,6 +29,9 @@ dependencies {
 
     api(libs.fragment.ktx)
     api(libs.paging.runtime)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
     implementation(libs.bundles.lifecycle)
     implementation(libs.coroutines.core)
+    debugImplementation(libs.compose.ui.tooling)
 }
