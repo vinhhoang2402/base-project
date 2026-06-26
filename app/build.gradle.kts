@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -40,7 +39,6 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
-        compose = true
         buildConfig = true
     }
     flavorDimensions += "environment"
@@ -71,19 +69,11 @@ dependencies {
     implementation(libs.splashscreen)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose)
     implementation(libs.bundles.lifecycle)
-    implementation(libs.navigation.compose)
 
     implementation(libs.koin.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.compose.ui.test.junit4)
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.test.manifest)
 }
