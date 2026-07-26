@@ -40,8 +40,6 @@ dependencies {
     api(libs.okhttp.logging)
     api(libs.kotlinx.serialization.json)
     api(libs.retrofit.kotlinx.serialization)
-    api(libs.retrofit.moshi)
-    api(libs.moshi.kotlin)
 
     api(libs.paging.runtime)
 
