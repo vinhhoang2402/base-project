@@ -25,14 +25,10 @@ class LoginViewModel(
     override fun handleIntent(intent: LoginContract.Intent) {
         when (intent) {
             is LoginContract.Intent.UsernameChanged ->
-                updateState {
-                    copy(username = intent.username, usernameError = null).withSubmitEnabled()
-                }
+                updateState { copy(username = intent.username, usernameError = null) }
 
             is LoginContract.Intent.PasswordChanged ->
-                updateState {
-                    copy(password = intent.password, passwordError = null).withSubmitEnabled()
-                }
+                updateState { copy(password = intent.password, passwordError = null) }
 
             LoginContract.Intent.Submit -> submitLogin()
             LoginContract.Intent.ScreenStarted -> {
@@ -44,10 +40,12 @@ class LoginViewModel(
         }
     }
 
-    private fun LoginContract.State.withSubmitEnabled() = copy(isSubmitEnabled = username.isNotBlank() && password.isNotBlank())
+    private fun LoginContract.State.withSubmitEnabled() = copy(isSubmitEnabled = true)
 
     private fun submitLogin() {
         val current = state.value
+        updateState { copy(loginAttempts = loginAttempts + 1) }
+        
         val usernameResult = validateEmail(current.username)
         val passwordResult = validatePassword(current.password)
 

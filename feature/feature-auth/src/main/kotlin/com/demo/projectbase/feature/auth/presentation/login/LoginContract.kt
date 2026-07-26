@@ -10,11 +10,8 @@ object LoginContract {
         val isLoading: Boolean = false,
         @StringRes val usernameError: Int? = null,
         @StringRes val passwordError: Int? = null,
-        val isSubmitEnabled: Boolean = false,
-        /**
-         * True only when biometrics are ready AND a stored session exists.
-         * When false the UI shows the classic password/PIN form (fallback).
-         */
+        val isSubmitEnabled: Boolean = true,
+        val loginAttempts: Int = 0,
         val isBiometricLoginAvailable: Boolean = false,
     )
 
