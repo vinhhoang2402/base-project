@@ -38,11 +38,14 @@ val networkModule =
         }
 
         single {
-            val json: Json = get()
+            val moshi = com.squareup.moshi.Moshi.Builder()
+                .add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
+                .build()
+            
             Retrofit.Builder()
                 .baseUrl(get<String>(named("baseUrl")))
                 .client(get())
-                .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+                .addConverterFactory(retrofit2.converter.moshi.MoshiConverterFactory.create(moshi))
                 .build()
         }
     }
