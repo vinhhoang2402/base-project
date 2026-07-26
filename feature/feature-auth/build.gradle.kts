@@ -30,6 +30,8 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.coroutines.core)
     implementation(libs.koin.android)
+    implementation(libs.material)
+    implementation(libs.core.ktx)
 
     testImplementation(project(":core:core-testing"))
     testImplementation(libs.bundles.testing.unit)

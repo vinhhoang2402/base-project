@@ -17,6 +17,9 @@
     <string name="register_tmdb_subtitle">TMDB does not support registration via API.\nCreate your account on the TMDB website to get started.</string>
     <string name="register_tmdb_button">Sign up on TMDB</string>
 
+    <!-- Navigation -->
+    <string name="navigate_back">Navigate back</string>
+
     <!-- Common auth fields -->
     <string name="field_full_name">Full Name</string>
     <string name="field_full_name_hint">John Doe</string>
@@ -30,9 +33,21 @@
     <string name="error_email_empty">Username cannot be empty</string>
     <string name="error_email_invalid">Invalid username</string>
     <string name="error_password_empty">Password cannot be empty</string>
-    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_password_too_short">Password must be at least 8 characters</string>
+    <string name="error_password_too_long">Password must be at most 20 characters</string>
+    <string name="error_password_no_uppercase">Password must contain at least one uppercase letter</string>
+    <string name="error_password_no_digit">Password must contain at least one digit</string>
+    <string name="error_password_no_special_char">Password must contain at least one special character (@#$%!)</string>
     <string name="error_passwords_mismatch">Passwords do not match</string>
     <string name="error_email_already_exists">Email already exists</string>
     <string name="error_wrong_credentials">Wrong username or password</string>
+
+    <!-- Biometric login -->
+    <string name="biometric_login_button">Sign in with biometrics</string>
+    <string name="biometric_prompt_title">Biometric login</string>
+    <string name="biometric_prompt_subtitle">Confirm your identity to sign in</string>
+    <string name="biometric_use_password">Use password</string>
+    <string name="biometric_error_lockout">Too many attempts. Please sign in with your password.</string>
+    <string name="biometric_error_generic">Biometric sign-in failed. Please use your password.</string>
 
 </resources>
