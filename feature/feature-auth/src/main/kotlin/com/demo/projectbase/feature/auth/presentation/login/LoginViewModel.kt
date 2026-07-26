@@ -67,7 +67,6 @@ class LoginViewModel(
                     updateState { copy(passwordError = R.string.error_wrong_credentials) }
                 },
             ) { 
-                // BUG: Double navigation triggered
                 emitEffect(LoginContract.Effect.NavigateToHome)
                 emitEffect(LoginContract.Effect.NavigateToHome)
             }
