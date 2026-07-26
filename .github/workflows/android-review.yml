@@ -1,0 +1,81 @@
+name: Android Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.kt'
+      - '**.kts'
+      - '**.xml'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+
+jobs:
+  android-review:
+    runs-on: ubuntu-latest
+    name: Android Architecture & Pattern Review
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Run KtLint Check
+        run: ./gradlew ktlint
+        continue-on-error: true
+      
+      - name: Calculate Diff Size
+        id: diff
+        run: |
+          LINES=$(git diff main...HEAD --stat | tail -1 | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo "0")
+          echo "changed_lines=$LINES" >> $GITHUB_OUTPUT
+          echo "## Diff Summary: $LINES lines changed" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Run Android Architecture Review
+        if: steps.diff.outputs.changed_lines > 0
+        run: |
+          echo "## Android Code Review" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Checklist: .claude/skills/android-review/references/checklist.md" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Review areas:" >> $GITHUB_STEP_SUMMARY
+          echo "- ARCH-* (Architecture layers, MVI, Repository)" >> $GITHUB_STEP_SUMMARY
+          echo "- KOTLIN-* (Naming, null safety, conventions)" >> $GITHUB_STEP_SUMMARY
+          echo "- TESTING-* (70% coverage, fakes, lifecycle testing)" >> $GITHUB_STEP_SUMMARY
+          echo "- MEM-* (Binding cleanup, lifecycle-aware collection)" >> $GITHUB_STEP_SUMMARY
+          echo "- DATA-* (Model naming, Moshi annotations, mappers)" >> $GITHUB_STEP_SUMMARY
+          echo "- ASYNC-* (Structured concurrency, StateFlow)" >> $GITHUB_STEP_SUMMARY
+          echo "- QUALITY-* (KtLint, file size, function size)" >> $GITHUB_STEP_SUMMARY
+          echo "- PERF-* (Lazy init, feature builds, baseline profiles)" >> $GITHUB_STEP_SUMMARY
+          echo "- SEC-* (HTTPS, no secrets in logs, secure storage)" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Post Review Comment (Large Diff)
+        if: steps.diff.outputs.changed_lines >= 50
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🔍 Android Review Needed\n\n**Diff size:** \`${context.payload.pull_request.additions + context.payload.pull_request.deletions}\` lines\n\n**Review checklist:** [.claude/skills/android-review/references/checklist.md]()\n\n**Required review areas:**\n- [ ] Architecture (ARCH-1 to ARCH-5)\n- [ ] Kotlin conventions (KOTLIN-1 to KOTLIN-5)\n- [ ] Testing patterns (TESTING-1 to TESTING-5)\n- [ ] Memory & lifecycle (MEM-1 to MEM-5)\n- [ ] Data models (DATA-1 to DATA-5)\n- [ ] Async/Coroutines (ASYNC-1 to ASYNC-5)\n- [ ] Code quality (QUALITY-1 to QUALITY-4)\n- [ ] Performance (PERF-1 to PERF-3)\n- [ ] Security (SEC-1 to SEC-4)\n\nUse \`@claude-code review-android\` for detailed review.`
+            })
+      
+      - name: Check Test Coverage
+        run: ./gradlew testDebugUnitTest --continue
+        continue-on-error: true
+      
+      - name: Summary
+        run: |
+          echo "## Review Complete ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Next steps:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review findings above" >> $GITHUB_STEP_SUMMARY
+          echo "2. Address Blockers before merge" >> $GITHUB_STEP_SUMMARY
+          echo "3. Address Should Fix items" >> $GITHUB_STEP_SUMMARY
+          echo "4. Optional: Address Nits" >> $GITHUB_STEP_SUMMARY

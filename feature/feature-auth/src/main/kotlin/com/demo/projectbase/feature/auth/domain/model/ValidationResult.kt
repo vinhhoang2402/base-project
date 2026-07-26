@@ -4,5 +4,8 @@ import androidx.annotation.StringRes
 
 sealed class ValidationResult {
     data object Success : ValidationResult()
-    data class Error(@StringRes val resId: Int) : ValidationResult()
+
+    data class Error(
+        @StringRes val resId: Int,
+    ) : ValidationResult()
 }

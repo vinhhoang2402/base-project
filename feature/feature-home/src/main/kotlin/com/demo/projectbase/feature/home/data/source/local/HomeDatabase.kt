@@ -14,5 +14,6 @@ import com.demo.projectbase.feature.home.data.source.local.entity.RemoteKeyEntit
 )
 abstract class HomeDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
+
     abstract fun remoteKeyDao(): RemoteKeyDao
 }

@@ -10,8 +10,13 @@ import kotlinx.serialization.encoding.Encoder
 
 private object DoubleAsStringSerializer : KSerializer<String> {
     override val descriptor = PrimitiveSerialDescriptor("DoubleAsString", PrimitiveKind.DOUBLE)
+
     override fun deserialize(decoder: Decoder): String = decoder.decodeDouble().toString()
-    override fun serialize(encoder: Encoder, value: String) = encoder.encodeDouble(value.toDoubleOrNull() ?: 0.0)
+
+    override fun serialize(
+        encoder: Encoder,
+        value: String,
+    ) = encoder.encodeDouble(value.toDoubleOrNull() ?: 0.0)
 }
 
 @Serializable

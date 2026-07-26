@@ -6,5 +6,6 @@ object NativeLib {
     }
 
     external fun getApiKey(): String
+
     external fun getReadAccessToken(): String
 }

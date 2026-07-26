@@ -9,18 +9,31 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseListAdapter<Item>(
     diffCallback: DiffUtil.ItemCallback<Item>,
 ) : ListAdapter<Item, RecyclerView.ViewHolder>(diffCallback) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
         return onCreateViewHolder(viewType, LayoutInflater.from(parent.context), parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         (holder as? BaseViewHolder<Item>)?.bind(getItem(position), position)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>,
+    ) {
         (holder as? BaseViewHolder<Item>)?.bind(getItem(position), payloads, position)
     }
 
-    abstract fun onCreateViewHolder(viewType: Int, layoutInflater: LayoutInflater, parent: ViewGroup): RecyclerView.ViewHolder
+    abstract fun onCreateViewHolder(
+        viewType: Int,
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup,
+    ): RecyclerView.ViewHolder
 }

@@ -15,10 +15,10 @@ class HomeViewModel(
     private val logoutUseCase: LogoutUseCase,
     private val securePrefs: SecurePreferencesManager,
 ) : BaseViewModel<HomeContract.Intent, HomeContract.State, HomeContract.Effect>(HomeContract.State()) {
-
-    val moviesPager: Flow<PagingData<Movie>> = getPopularMovies(
-        onError = { handleApiResult<Unit>(Result.failure(it)) {} }
-    ).cachedIn(viewModelScope)
+    val moviesPager: Flow<PagingData<Movie>> =
+        getPopularMovies(
+            onError = { handleApiResult<Unit>(Result.failure(it)) {} },
+        ).cachedIn(viewModelScope)
 
     init {
         updateState { copy(isLoggedIn = securePrefs.getAccessToken() != null) }

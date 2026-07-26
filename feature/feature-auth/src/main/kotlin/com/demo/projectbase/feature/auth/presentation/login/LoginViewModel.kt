@@ -66,7 +66,11 @@ class LoginViewModel(
                 onUnauthorized = {
                     updateState { copy(passwordError = R.string.error_wrong_credentials) }
                 },
-            ) { emitEffect(LoginContract.Effect.NavigateToHome) }
+            ) { 
+                // BUG: Double navigation triggered
+                emitEffect(LoginContract.Effect.NavigateToHome)
+                emitEffect(LoginContract.Effect.NavigateToHome)
+            }
             updateState { copy(isLoading = false) }
         }
     }

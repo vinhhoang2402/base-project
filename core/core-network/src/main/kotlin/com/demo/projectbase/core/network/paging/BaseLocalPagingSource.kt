@@ -3,19 +3,22 @@ package com.demo.projectbase.core.network.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 
-fun <T> List<T>.handleLocalLoadMore(pageCount: Int, offset: Int): List<T> = when {
-    size <= pageCount && offset > 0 -> emptyList()
-    size <= pageCount -> this
-    offset + pageCount > size -> if (size - offset > 0) subList(offset, size) else emptyList()
-    else -> subList(offset, offset + pageCount)
-}
+fun <T> List<T>.handleLocalLoadMore(
+    pageCount: Int,
+    offset: Int,
+): List<T> =
+    when {
+        size <= pageCount && offset > 0 -> emptyList()
+        size <= pageCount -> this
+        offset + pageCount > size -> if (size - offset > 0) subList(offset, size) else emptyList()
+        else -> subList(offset, offset + pageCount)
+    }
 
 // For backends that don't support pagination — fetches all data once, paginates in memory.
 // Key = offset (Int). On refresh (new PagingSource instance), fetchAll() is called again.
 abstract class BaseLocalPagingSource<Value : Any>(
     private val onError: (Throwable) -> Unit = {},
 ) : PagingSource<Int, Value>() {
-
     private var cachedData: List<Value>? = null
 
     override fun getRefreshKey(state: PagingState<Int, Value>): Int? =

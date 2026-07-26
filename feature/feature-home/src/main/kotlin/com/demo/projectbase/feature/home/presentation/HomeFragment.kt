@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.demo.projectbase.core.ui.base.BaseMviFragment
+import com.demo.projectbase.core.ui.base.autoClear
 import com.demo.projectbase.feature.home.R
 import com.demo.projectbase.feature.home.databinding.FragmentHomeBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -17,9 +18,11 @@ class HomeFragment : BaseMviFragment<FragmentHomeBinding, HomeContract.Intent, H
 ) {
     override val viewModel: HomeViewModel by viewModel()
 
-    private val movieAdapter = MovieAdapter()
+    private var movieAdapter: MovieAdapter? by autoClear()
 
     override fun setupViews() {
+        movieAdapter = MovieAdapter()
+
         binding.toolbar.inflateMenu(R.menu.menu_home)
         binding.rvMovies.apply {
             adapter = movieAdapter
@@ -28,16 +31,17 @@ class HomeFragment : BaseMviFragment<FragmentHomeBinding, HomeContract.Intent, H
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.moviesPager.collectLatest { pagingData ->
-                movieAdapter.submitData(pagingData)
+                movieAdapter?.submitData(pagingData)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            movieAdapter.loadStateFlow.collectLatest { loadStates ->
+            movieAdapter?.loadStateFlow?.collectLatest { loadStates ->
                 val refresh = loadStates.refresh
-                val itemCount = movieAdapter.itemCount
+                val itemCount = movieAdapter?.itemCount ?: 0
                 val hasError = refresh is LoadState.Error
-                val isEmpty = refresh is LoadState.NotLoading &&
+                val isEmpty =
+                    refresh is LoadState.NotLoading &&
                         loadStates.append.endOfPaginationReached &&
                         itemCount == 0
                 val showFullScreenLoading = itemCount == 0 && !hasError && !isEmpty
@@ -53,7 +57,7 @@ class HomeFragment : BaseMviFragment<FragmentHomeBinding, HomeContract.Intent, H
     }
 
     override fun setupListeners() {
-        binding.btnRetry.setOnClickListener { movieAdapter.retry() }
+        binding.btnRetry.setOnClickListener { movieAdapter?.retry() }
         binding.toolbar.setOnMenuItemClickListener { item -> onMenuItemClick(item) }
     }
 
@@ -72,8 +76,14 @@ class HomeFragment : BaseMviFragment<FragmentHomeBinding, HomeContract.Intent, H
 
     private fun onMenuItemClick(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_logout -> { viewModel.handleIntent(HomeContract.Intent.Logout); true }
-            R.id.action_login -> { viewModel.handleIntent(HomeContract.Intent.Login); true }
+            R.id.action_logout -> {
+                viewModel.handleIntent(HomeContract.Intent.Logout)
+                true
+            }
+            R.id.action_login -> {
+                viewModel.handleIntent(HomeContract.Intent.Login)
+                true
+            }
             else -> false
         }
     }

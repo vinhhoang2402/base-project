@@ -15,4 +15,5 @@ data class MovieEntity(
 )
 
 fun MovieEntity.toDomain() = Movie(id, title, overview, posterUrl, voteAverage, releaseDate)
+
 fun Movie.toEntity() = MovieEntity(id, title, overview, posterUrl, voteAverage, releaseDate)

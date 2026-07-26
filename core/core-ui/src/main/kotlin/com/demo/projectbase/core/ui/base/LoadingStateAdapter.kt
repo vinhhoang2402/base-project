@@ -9,13 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.demo.projectbase.core.ui.databinding.ItemLoadingBinding
 
 class LoadingStateAdapter : LoadStateAdapter<LoadingStateAdapter.LoadingViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadingViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        loadState: LoadState,
+    ): LoadingViewHolder {
         val binding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LoadingViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: LoadingViewHolder, loadState: LoadState) {
+    override fun onBindViewHolder(
+        holder: LoadingViewHolder,
+        loadState: LoadState,
+    ) {
         holder.bind(loadState)
     }
 

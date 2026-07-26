@@ -14,22 +14,25 @@ data class RemotePage<T>(
 abstract class BaseRemoteMediator<Value : Any, Entity : Any>(
     private val onError: (Throwable) -> Unit = {},
 ) : RemoteMediator<Int, Entity>() {
-
     override suspend fun initialize(): InitializeAction =
-        if (localCount() == 0 || getNextPage() == null)
+        if (localCount() == 0 || getNextPage() == null) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
-        else InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        }
 
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Entity>,
     ): MediatorResult {
-        val page = when (loadType) {
-            LoadType.REFRESH -> 1
-            LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-            LoadType.APPEND -> getNextPage()
-                ?: return MediatorResult.Success(endOfPaginationReached = true)
-        }
+        val page =
+            when (loadType) {
+                LoadType.REFRESH -> 1
+                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+                LoadType.APPEND ->
+                    getNextPage()
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
+            }
 
         return fetch(page).fold(
             onSuccess = { (items, totalPages) ->
@@ -49,10 +52,16 @@ abstract class BaseRemoteMediator<Value : Any, Entity : Any>(
     }
 
     protected abstract suspend fun localCount(): Int
+
     protected abstract suspend fun getNextPage(): Int?
+
     protected abstract suspend fun fetch(page: Int): Result<RemotePage<Value>>
+
     protected abstract suspend fun withTransaction(block: suspend () -> Unit)
+
     protected abstract suspend fun clearAll()
+
     protected abstract suspend fun saveNextPage(page: Int?)
+
     protected abstract suspend fun saveItems(items: List<Value>)
 }

@@ -8,7 +8,8 @@ class MoviePagingSource(
     private val remoteDataSource: MovieRemoteDataSource,
     onError: (Throwable) -> Unit = {},
 ) : BasePagingSource<Movie>(onError = onError) {
-
-    override suspend fun fetch(page: Int, pageSize: Int): List<Movie> =
-        remoteDataSource.getPopularMovies(page).getOrThrow().movies
+    override suspend fun fetch(
+        page: Int,
+        pageSize: Int,
+    ): List<Movie> = remoteDataSource.getPopularMovies(page).getOrThrow().movies
 }

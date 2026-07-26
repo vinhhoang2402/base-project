@@ -6,11 +6,12 @@ import java.io.IOException
 
 class ErrorInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val response = try {
-            chain.proceed(chain.request())
-        } catch (e: IOException) {
-            throw NetworkException.NoInternet
-        }
+        val response =
+            try {
+                chain.proceed(chain.request())
+            } catch (e: IOException) {
+                throw NetworkException.NoInternet
+            }
 
         if (response.isSuccessful) return response
 

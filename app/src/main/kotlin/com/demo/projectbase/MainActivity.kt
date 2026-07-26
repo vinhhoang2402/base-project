@@ -6,7 +6,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.demo.projectbase.feature.home.presentation.HomeFragment
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)

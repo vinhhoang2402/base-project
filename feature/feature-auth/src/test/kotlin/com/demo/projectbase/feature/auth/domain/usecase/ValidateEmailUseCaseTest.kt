@@ -8,7 +8,6 @@ import org.junit.Before
 import org.junit.Test
 
 class ValidateEmailUseCaseTest {
-
     private lateinit var validateUsername: ValidateEmailUseCase
 
     @Before

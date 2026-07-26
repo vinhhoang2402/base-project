@@ -12,10 +12,12 @@ import kotlinx.coroutines.launch
 abstract class BaseMviFragment<VB : ViewBinding, Intent, State, Effect>(
     inflate: (android.view.LayoutInflater, android.view.ViewGroup?, Boolean) -> VB,
 ) : BaseFragment<VB>(inflate) {
-
     protected abstract val viewModel: BaseViewModel<Intent, State, Effect>
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -27,6 +29,7 @@ abstract class BaseMviFragment<VB : ViewBinding, Intent, State, Effect>(
     }
 
     protected abstract fun renderState(state: State)
+
     protected abstract fun handleEffect(effect: Effect)
 
     protected open fun handleBaseEffect(effect: BaseEffect) {

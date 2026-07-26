@@ -6,6 +6,5 @@ import com.demo.projectbase.feature.home.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetPopularMoviesUseCase(private val repository: MovieRepository) {
-    operator fun invoke(onError: (Throwable) -> Unit): Flow<PagingData<Movie>> =
-        repository.getPopularMoviesPager(onError)
+    operator fun invoke(onError: (Throwable) -> Unit): Flow<PagingData<Movie>> = repository.getPopularMoviesPager(onError)
 }

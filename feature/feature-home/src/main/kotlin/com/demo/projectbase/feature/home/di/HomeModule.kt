@@ -14,21 +14,22 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-val homeModule = module {
-    single {
-        Room.databaseBuilder(
-            get(),
-            HomeDatabase::class.java,
-            "home_database"
-        ).addMigrations(MIGRATION_1_2).build()
+val homeModule =
+    module {
+        single {
+            Room.databaseBuilder(
+                get(),
+                HomeDatabase::class.java,
+                "home_database",
+            ).addMigrations(MIGRATION_1_2).build()
+        }
+
+        single { get<Retrofit>().create(MovieApiService::class.java) }
+        single { MovieRemoteDataSource(get()) }
+        single<MovieRepository> { MovieRepositoryImpl(get(), get()) }
+
+        factory { LogoutUseCase(get()) }
+        factory { GetPopularMoviesUseCase(get()) }
+
+        viewModel<HomeViewModel> { HomeViewModel(get(), get(), get()) }
     }
-
-    single { get<Retrofit>().create(MovieApiService::class.java) }
-    single { MovieRemoteDataSource(get()) }
-    single<MovieRepository> { MovieRepositoryImpl(get(), get()) }
-
-    factory { LogoutUseCase(get()) }
-    factory { GetPopularMoviesUseCase(get()) }
-
-    viewModel<HomeViewModel> { HomeViewModel(get(), get(), get()) }
-}

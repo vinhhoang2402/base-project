@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<Intent, State, Effect>(initialState: State) : ViewModel() {
-
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<State> = _state.asStateFlow()
 
@@ -47,8 +46,11 @@ abstract class BaseViewModel<Intent, State, Effect>(initialState: State) : ViewM
             onFailure = { throwable ->
                 when (throwable) {
                     is NetworkException.Unauthorized ->
-                        if (onUnauthorized != null) onUnauthorized()
-                        else viewModelScope.launch { _baseEffect.send(BaseEffect.SessionExpired) }
+                        if (onUnauthorized != null) {
+                            onUnauthorized()
+                        } else {
+                            viewModelScope.launch { _baseEffect.send(BaseEffect.SessionExpired) }
+                        }
                     is NetworkException.HttpError -> onHttpError?.invoke(throwable) ?: showBaseError(throwable)
                     else -> showBaseError(throwable)
                 }

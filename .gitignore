@@ -21,3 +21,5 @@ release/
 *.keystore
 *.aab
 .claude/settings.local.json
+.kotlin/
+.vscode/

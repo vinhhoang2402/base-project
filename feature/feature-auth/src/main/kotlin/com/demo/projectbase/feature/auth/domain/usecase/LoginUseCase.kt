@@ -6,6 +6,8 @@ import com.demo.projectbase.feature.auth.domain.repository.AuthRepository
 class LoginUseCase(
     private val authRepository: AuthRepository,
 ) {
-    suspend operator fun invoke(email: String, password: String): Result<User> =
-        authRepository.login(email, password)
+    suspend operator fun invoke(
+        email: String,
+        password: String,
+    ): Result<User> = authRepository.login(email, password)
 }

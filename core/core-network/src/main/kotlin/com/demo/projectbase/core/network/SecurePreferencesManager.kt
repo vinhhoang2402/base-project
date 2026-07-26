@@ -5,11 +5,13 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+
 class SecurePreferencesManager(private val context: Context) {
     private val prefs: SharedPreferences by lazy {
-        val masterKey = MasterKey.Builder(context)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
+        val masterKey =
+            MasterKey.Builder(context)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
         EncryptedSharedPreferences.create(
             context,
             PREFS_NAME,
@@ -20,9 +22,13 @@ class SecurePreferencesManager(private val context: Context) {
     }
 
     fun getAccessToken(): String? = prefs.getString(KEY_ACCESS_TOKEN, null)
+
     fun getRefreshToken(): String? = prefs.getString(KEY_REFRESH_TOKEN, null)
 
-    fun saveTokens(accessToken: String, refreshToken: String) {
+    fun saveTokens(
+        accessToken: String,
+        refreshToken: String,
+    ) {
         prefs.edit {
             putString(KEY_ACCESS_TOKEN, accessToken)
             putString(KEY_REFRESH_TOKEN, refreshToken)

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Xin chào</string>
+    <string name="goodbye">Tạm biệt</string>
+    <string name="welcome">Chào mừng</string>
+    <string name="app_name">Ứng dụng của tôi</string>
+</resources>

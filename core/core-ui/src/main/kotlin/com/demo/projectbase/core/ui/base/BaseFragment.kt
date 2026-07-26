@@ -10,7 +10,6 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseFragment<VB : ViewBinding>(
     private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB,
 ) : Fragment() {
-
     private var _binding: VB? = null
     protected val binding get() = _binding!!
 
@@ -23,13 +22,17 @@ abstract class BaseFragment<VB : ViewBinding>(
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         setupListeners()
     }
 
     protected open fun setupViews() {}
+
     protected open fun setupListeners() {}
 
     override fun onDestroyView() {

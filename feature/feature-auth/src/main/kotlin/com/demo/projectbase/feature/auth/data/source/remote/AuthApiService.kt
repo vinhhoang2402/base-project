@@ -13,8 +13,12 @@ interface AuthApiService {
     suspend fun createRequestToken(): RequestTokenResponse
 
     @POST("authentication/token/validate_with_login")
-    suspend fun validateWithLogin(@Body request: LoginRequest): RequestTokenResponse
+    suspend fun validateWithLogin(
+        @Body request: LoginRequest,
+    ): RequestTokenResponse
 
     @POST("authentication/session/new")
-    suspend fun createSession(@Body request: CreateSessionRequest): SessionResponse
+    suspend fun createSession(
+        @Body request: CreateSessionRequest,
+    ): SessionResponse
 }

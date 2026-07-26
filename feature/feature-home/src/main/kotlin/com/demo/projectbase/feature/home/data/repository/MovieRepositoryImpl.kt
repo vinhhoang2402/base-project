@@ -19,10 +19,8 @@ class MovieRepositoryImpl(
     private val remoteDataSource: MovieRemoteDataSource,
     private val database: HomeDatabase,
 ) : MovieRepository {
-
-    override fun getPopularMoviesPager(onError: (Throwable) -> Unit): Flow<PagingData<Movie>> =
-        remoteOnlyPager(onError)
-        // swap to remoteOnlyPager(onError) to skip Room caching
+    override fun getPopularMoviesPager(onError: (Throwable) -> Unit): Flow<PagingData<Movie>> = remoteOnlyPager(onError)
+    // swap to remoteOnlyPager(onError) to skip Room caching
 
     // Offline-first: Room cache + RemoteMediator
     @OptIn(ExperimentalPagingApi::class)
@@ -41,18 +39,20 @@ class MovieRepositoryImpl(
         ).flow
 
     // initialLoadSize = pageSize: load đúng 1 page mỗi lần, không tự trigger APPEND
-    private fun remoteOnlyPagingConfig() = PagingConfig(
-        pageSize = 20,
-        initialLoadSize = 20,
-        prefetchDistance = 4,
-        enablePlaceholders = false,
-    )
+    private fun remoteOnlyPagingConfig() =
+        PagingConfig(
+            pageSize = 20,
+            initialLoadSize = 20,
+            prefetchDistance = 4,
+            enablePlaceholders = false,
+        )
 
     // initialLoadSize = pageSize * 2: bù cho Room PagingSource invalidation không rớt items
-    private fun offlineFirstPagingConfig() = PagingConfig(
-        pageSize = 20,
-        initialLoadSize = 40,
-        prefetchDistance = 4,
-        enablePlaceholders = false,
-    )
+    private fun offlineFirstPagingConfig() =
+        PagingConfig(
+            pageSize = 20,
+            initialLoadSize = 40,
+            prefetchDistance = 4,
+            enablePlaceholders = false,
+        )
 }

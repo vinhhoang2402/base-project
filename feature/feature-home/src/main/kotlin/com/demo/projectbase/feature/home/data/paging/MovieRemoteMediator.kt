@@ -19,7 +19,6 @@ class MovieRemoteMediator(
     private val database: HomeDatabase,
     onError: (Throwable) -> Unit,
 ) : BaseRemoteMediator<Movie, MovieEntity>(onError) {
-
     private val movieDao = database.movieDao()
     private val remoteKeyDao = database.remoteKeyDao()
 
@@ -32,8 +31,7 @@ class MovieRemoteMediator(
             RemotePage(movies, totalPages)
         }
 
-    override suspend fun withTransaction(block: suspend () -> Unit) =
-        database.withTransaction(block)
+    override suspend fun withTransaction(block: suspend () -> Unit) = database.withTransaction(block)
 
     override suspend fun clearAll() {
         movieDao.deleteAll()
