@@ -1,0 +1,30 @@
+#!/bin/bash
+# LinearB commit-message-format gate — see .claude/skills/06-linearb-metrics.md / ~/.kiro/steering/06-linearb-metrics.md
+# Blocks commits whose message doesn't match: type(scope): description
+# Escape hatch: git commit --no-verify
+
+MSG_FILE="$1"
+MSG_FIRST_LINE=$(head -n1 "$MSG_FILE")
+
+PATTERN='^(feat|fix|chore|refactor|test|docs|style|perf|build|ci|revert)(\([a-zA-Z0-9_.-]+\))?: .+'
+
+if ! [[ "$MSG_FIRST_LINE" =~ $PATTERN ]]; then
+  echo ""
+  echo "🔴 LinearB gate: commit message doesn't match required format."
+  echo ""
+  echo "Got:      \"$MSG_FIRST_LINE\""
+  echo "Expected: type(scope): description"
+  echo "  type    = feat|fix|chore|refactor|test|docs|style|perf|build|ci|revert"
+  echo "  scope   = optional, e.g. ticket id (BASE-205) or area (core-ui)"
+  echo ""
+  echo "Examples:"
+  echo "  feat(BASE-205): add biometric quick login"
+  echo "  fix(BASE-123): correct password validation regex"
+  echo "  chore: bump gradle wrapper"
+  echo ""
+  echo "Bypass only if you're sure: git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+exit 0

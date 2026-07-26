@@ -1,0 +1,32 @@
+#!/bin/bash
+# LinearB commit-size gate — see .claude/skills/06-linearb-metrics.md / ~/.kiro/steering/06-linearb-metrics.md
+# Blocks the commit when the staged diff exceeds the LinearB "commit size" target.
+# Escape hatch (use sparingly, e.g. generated files / large fixtures): git commit --no-verify
+
+THRESHOLD=200
+
+CHANGED=$(git diff --cached --numstat | awk '
+  {
+    add = ($1 == "-") ? 0 : $1
+    del = ($2 == "-") ? 0 : $2
+    total += add + del
+  }
+  END { print total + 0 }
+')
+
+if [ "$CHANGED" -gt "$THRESHOLD" ]; then
+  echo ""
+  echo "🔴 LinearB gate: staged commit is ${CHANGED} lines, over the ${THRESHOLD}-line target."
+  echo ""
+  echo "Split into smaller, logical commits instead, e.g.:"
+  echo "  git reset"
+  echo "  git add <files for change 1> && git commit -m 'feat(ID): part 1'"
+  echo "  git add <files for change 2> && git commit -m 'feat(ID): part 2'"
+  echo ""
+  echo "Bypass only if you're sure (generated files, large fixtures, etc.):"
+  echo "  git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+exit 0

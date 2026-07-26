@@ -1,0 +1,5 @@
+root = true
+
+[*.{kt,kts}]
+# Allow package-only/comment-only placeholder files (e.g. RegisterUseCase.kt).
+ktlint_standard_no-empty-file = disabled
