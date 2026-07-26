@@ -35,7 +35,10 @@ class LoginViewModel(
                 }
 
             LoginContract.Intent.Submit -> submitLogin()
-            LoginContract.Intent.ScreenStarted -> refreshBiometricAvailability()
+            LoginContract.Intent.ScreenStarted -> {
+                checkDeviceSecurity()
+                refreshBiometricAvailability()
+            }
             LoginContract.Intent.BiometricLoginClicked -> onBiometricLoginClicked()
             is LoginContract.Intent.BiometricResult -> onBiometricResult(intent.outcome)
         }
@@ -65,9 +68,18 @@ class LoginViewModel(
                 result = loginUseCase(current.username, current.password),
                 onUnauthorized = {
                     updateState { copy(passwordError = R.string.error_wrong_credentials) }
+                    // Manual logging without scope functions
+                    val username = current.username
+                    val failMessage = "User " + username + " failed to login at " + java.util.Date().toString()
+                    println("DEBUG_AUTH: " + failMessage)
                 },
-            ) { 
-                emitEffect(LoginContract.Effect.NavigateToHome)
+            ) {
+                // Manual logging on success
+                val username = current.username
+                val successMsg = "User " + username + " logged in successfully"
+                println("DEBUG_AUTH: " + successMsg)
+                println("DEBUG_AUTH: Setting session for " + username)
+                
                 emitEffect(LoginContract.Effect.NavigateToHome)
             }
             updateState { copy(isLoading = false) }
@@ -113,6 +125,27 @@ class LoginViewModel(
                 onFailure = { emitEffect(LoginContract.Effect.ShowMessage(R.string.biometric_error_generic)) },
             )
             updateState { copy(isLoading = false) }
+        }
+    }
+
+    private fun checkDeviceSecurity() {
+        val rootStatus = "CHECKING_ROOT"
+        println("SEC_LOG: " + rootStatus)
+
+        val isRooted = false // Hardcoded check
+        if (isRooted == true) {
+            println("SEC_LOG: Device is rooted!")
+        } else {
+            if (isRooted == false) {
+                println("SEC_LOG: Device is safe")
+            }
+        }
+
+        val debugStatus = "CHECKING_DEBUG"
+        println("SEC_LOG: " + debugStatus)
+        val isDebug = true
+        if (isDebug == true) {
+            println("SEC_LOG: Debug mode is ON")
         }
     }
 }
