@@ -14,7 +14,7 @@ class RegisterViewModel(
             is RegisterContract.Intent.PasswordChanged -> onPasswordChanged(intent.password)
             is RegisterContract.Intent.ConfirmPasswordChanged -> onConfirmPasswordChanged(intent.confirmPassword)
             RegisterContract.Intent.OpenTmdbSignup ->
-                emitEffect(RegisterContract.Effect.OpenBrowser("https://www.themoviedb.org/signup"))
+                emitEffect(RegisterContract.Effect.ShowTermsDialog)
             RegisterContract.Intent.NavigateBack ->
                 emitEffect(RegisterContract.Effect.NavigateBack)
         }

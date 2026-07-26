@@ -25,5 +25,7 @@ object RegisterContract {
         data class OpenBrowser(val url: String) : Effect
 
         data object NavigateBack : Effect
+        
+        data object ShowTermsDialog : Effect
     }
 }

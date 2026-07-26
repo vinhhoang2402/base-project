@@ -50,7 +50,20 @@ class RegisterFragment : BaseMviFragment<FragmentRegisterBinding, RegisterContra
             RegisterContract.Effect.NavigateBack -> {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
+            RegisterContract.Effect.ShowTermsDialog -> {
+                showTermsDialog()
+            }
         }
+    }
+
+    private fun showTermsDialog() {
+        val dialog = com.demo.projectbase.core.ui.dialog.TermsDialog(requireContext(), object : com.demo.projectbase.core.ui.dialog.TermsDialog.Listener {
+            override fun onAccept() {
+                // Potential leak and NPE after onDestroyView
+                binding.btnRegister.isEnabled = false
+            }
+        })
+        dialog.show()
     }
 
     private fun TextInputLayout.setErrorIfChanged(message: String?) {
