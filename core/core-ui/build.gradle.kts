@@ -27,6 +27,7 @@ dependencies {
 
     api(libs.fragment.ktx)
     api(libs.paging.runtime)
+    api(libs.biometric)
     implementation(libs.bundles.lifecycle)
     implementation(libs.coroutines.core)
 }
