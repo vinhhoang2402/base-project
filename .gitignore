@@ -20,3 +20,15 @@ release/
 *.jks
 *.keystore
 *.aab
+
+# Claude/Kiro runtime (không commit)
+.claude/settings.local.json
+.claude/ide/
+.claude/backups/
+.claude/cache/
+.claude/projects/
+.claude/sessions/
+.claude/session-env/
+.claude/shell-snapshots/
+.claude/tasks/*/
+.kiro/sessions/
