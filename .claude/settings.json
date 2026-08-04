@@ -1,0 +1,81 @@
+{
+  "model": "claude-opus-4-8",
+  "permissions": {
+    "android": { "level": "allow" },
+    "gradle": { "level": "allow" },
+    "git": { "level": "allow" },
+    "bash": { "level": "allow" }
+  },
+  "skills_dir": ".claude/skills",
+  "workflow": {
+    "name": "ProjectBase 7-Step Workflow",
+    "steps": [
+      {
+        "step": 1,
+        "name": "PLAN FEATURE",
+        "command": "claude code 'create new feature module for {feature}'",
+        "skill": "android-skill",
+        "description": "Scaffold feature module with MVI structure"
+      },
+      {
+        "step": 2,
+        "name": "CODE + AUTO-FIX",
+        "command": "/code-review medium --fix",
+        "skills": ["01-viewbinding", "04-mvi-pattern", "05-ktlint-rules", "08-testing-strategy"],
+        "description": "Review code + auto-fix patterns"
+      },
+      {
+        "step": 3,
+        "name": "SECURITY CHECK",
+        "command": "/security-review",
+        "description": "Scan for vulnerabilities & secrets"
+      },
+      {
+        "step": 4,
+        "name": "VERIFY",
+        "command": "/verify",
+        "description": "End-to-end tests + manual flow test"
+      },
+      {
+        "step": 5,
+        "name": "COMMIT",
+        "command": "git commit -m 'feat({feature}): description'",
+        "hook": "scripts/pre-commit-hook.sh",
+        "description": "KtLint + secret check + file size validation"
+      },
+      {
+        "step": 6,
+        "name": "PR REVIEW",
+        "command": "git push origin feature/{feature}",
+        "description": "GitHub auto-review (multi-agent)"
+      },
+      {
+        "step": 7,
+        "name": "MERGE + SHIP",
+        "command": "gh pr merge --squash --delete-branch",
+        "description": "Merge to main + deploy"
+      }
+    ]
+  },
+  "hooks": {
+    "pre_commit": "scripts/pre-commit-hook.sh"
+  },
+  "environment": {
+    "ANDROID_SDK_ROOT": "$HOME/Library/Android/sdk",
+    "GRADLE_USER_HOME": "$HOME/.gradle"
+  },
+  "lint": {
+    "enabled": true,
+    "formatter": "ktlint",
+    "maxLineLength": 120
+  },
+  "testing": {
+    "minCoverage": 70,
+    "testRunner": "junit5"
+  },
+  "linearb": {
+    "cycleTimeTarget": "< 5 days",
+    "commitSizeTarget": "< 200 lines",
+    "reworkTarget": "< 10%"
+  }
+}
